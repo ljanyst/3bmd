@@ -112,8 +112,7 @@
                 l))
 
 (defrule block-quote (+ (and (and #\> (? #\space) line)
-                             (* (and (! #\>) (! blank-line) line))
-                             (* blank-line)))
+                             (* (and (! #\>) (! blank-line) line))))
   (:destructure (&rest chunks)
                 (cons :block-quote
                       (parse-doc
