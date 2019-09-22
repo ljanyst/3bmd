@@ -158,6 +158,7 @@
 (defmethod stop-concrete-renderer ((renderer (eql :pygments)))
   (write-line "exit" (process-info-input *pygmentize-process*))
   (force-output  (process-info-input *pygmentize-process*))
+  (close-streams *pygmentize-process*)
   (wait-process *pygmentize-process*))
 
 (defun pygmentize-code (lang params code)
