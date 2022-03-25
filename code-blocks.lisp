@@ -15,7 +15,8 @@
            #:*code-blocks-default-colorize*
            #:*code-blocks-pre-class*
            #:*code-blocks-span-class*
-           #:*code-blocks-coloring-type-remap*))
+           #:*code-blocks-coloring-type-remap*
+           #:*python-command*))
 
 (in-package #:3bmd-code-blocks)
 
