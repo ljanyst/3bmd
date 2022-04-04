@@ -2,6 +2,7 @@
 
 (defparameter *references* nil)
 (defparameter *always-title* nil)
+(defparameter *docid* nil)
 (defparameter *padding* 2)
 (defmacro padded ((n s &optional (next 0)) &body body)
   (alexandria:once-only (n s next)
@@ -60,9 +61,14 @@
 ;; todo: minimize extra newlines...
 (defmethod print-tagged-element ((tag (eql :heading)) stream rest)
   (padded (2 stream)
-    (format stream "<h~d>" (getf rest :level))
-    (mapcar (lambda (a) (print-element a stream)) (getf rest :contents))
-    (format stream "</h~d>" (getf rest :level))))
+    (let ((slug (subseq
+                 (sha-256 (concatenate 'string
+                                       *docid*
+                                       (concat-string (getf rest :contents))))
+                 0 16)))
+      (format stream "<h~d~@[ id=\"~a\"~]>" (getf rest :level) slug)
+      (mapcar (lambda (a) (print-element a stream)) (getf rest :contents))
+      (format stream "</h~d>" (getf rest :level)))))
 
 (defmethod print-tagged-element ((tag (eql :paragraph)) stream rest)
   (padded (2 stream)
