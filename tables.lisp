@@ -80,6 +80,7 @@
 (in-package #:3bmd)
 
 (defmethod print-tagged-element ((tag (eql 'table)) stream rest)
+  (format stream "<div class=\"table-wrapper\">")
   (padded (1 stream)
     (format stream "<table ~@[class=\"~a\"~]>" 3bmd-tables:*table-class*))
   (when (getf rest :head)
@@ -96,7 +97,8 @@
   (padded (1 stream)
     (format stream "</tbody>"))
   (padded (1 stream)
-    (format stream "</table>")))
+    (format stream "</table>"))
+  (format stream "</div>"))
 
 (defmethod print-tagged-element ((tag (eql 'tr)) stream rest)
   (padded (1 stream)
