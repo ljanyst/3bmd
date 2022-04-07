@@ -125,11 +125,15 @@
 (defmethod print-tagged-element ((tag (eql :reference-link)) stream rest)
   (let* ((label (getf rest :label))
          (def (or (getf rest :definition) label))
-         (ref (lookup-reference def)))
+         (ref (lookup-reference def))
+         (target (when (uiop:string-prefix-p "http" (first ref))
+                     "_blank")))
     (cond
       (ref
-       (format stream "<a href=\"~a\" ~@[title=\"~a\"~]>" (first ref)
-               (escape-string (or (second ref) (if *always-title* "" nil))))
+       (format stream "<a href=\"~a\" ~@[title=\"~a\"~] ~@[target=\"~a\"~]>"
+               (first ref)
+               (escape-string (or (second ref) (if *always-title* "" nil)))
+               target)
        (mapcar (lambda (a) (print-element a stream)) label)
        (format stream "</a>"))
       (t
